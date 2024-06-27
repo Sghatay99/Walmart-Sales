@@ -1,1 +1,127 @@
+Imported Data in MySQL workbench using the Table Data import wizard.
+
+
+Questions
+1.	How many distinct cities are present in the dataset?
+Select Distinct City from Walmart_sales
+
+2.	In which city is each branch situated?
+Select Branch, City from Walmart_sales
+group by Branch, City
+Order by branch
+
+3.	How many distinct product lines are there in the dataset?
+Select Distinct product_line from walmart_sales
+
+4. What is the most common payment method?
+Select payment as most_common_payment_method, Count(*) as count from walmart_sales 
+group by payment 
+order by count limit 1
+
+5. What is the most selling product line?
+select product_line as most_selling_product_line, count(*) as count from walmart_sales
+group by product_line
+order by count limit 1
+
+6. What is the total revenue by month?
+select month(date), sum((Unit_price * Quantity) + Tax) as Total_revenue
+from walmart_sales group by month(date)
+
+7. Which month recorded the highest Cost of Goods Sold (COGS)?
+select month(Date), sum(cogs) as total_cost
+from walmart_sales group by month(Date)
+order by total_cost Desc
+
+8.	Which product line generated the highest revenue?
+select product_line, (unit_price * Quantity + Tax) as Total_revenue from walmart_sales
+group by product_line
+order by total_revenue desc
+
+9.	Which city has the highest revenue?
+select city, (unit_price * Quantity + Tax) as Total_revenue from walmart_sales
+group by city
+order by total_revenue desc
+
+10. Which product line incurred the highest VAT?
+select product_line, sum(tax) as tax from walmart_sales
+group by product_line
+order by tax desc
+
+12.	What is the most common product line by gender?
+select product_line gender, count(product_line) as count from walmart_sales
+group by gender, product_line
+order by count desc
+
+13.	What is the average rating of each product line?
+select product_line, avg(Rating) as avg_rating from walmart_sales
+group by product_line
+
+14.	Number of sales made in each time of the day per weekday?
+select HOUR(Time), count(Time) from walmart_sales
+where WEEKDAY(Date) !=5 and WEEKDAY !=6
+group by HOUR(Time)
+order by HOUR(Time)
+
+15.	Identify the customer type that generates the highest revenue.
+select customer_type, (unit_price * Quantity + Tax) as Revenue from walmart_sales
+group by customer_type
+order by revenue desc
+
+16.	Which city has the largest tax percent/ VAT (Value Added Tax)?
+select city, sum(tax) as total_tax from walmart_sales
+group by city 
+order by total_tax desc
+
+17.	Which customer type pays the most VAT?
+select customer_type, sum(tax) as total_tax from walmart_sales
+group by customer_type
+order by total_tax desc
+
+18.	How many unique customer types does the data have?
+select distinct customer_type from walmart_sales
+
+19.	How many unique payment methods does the data have?
+select distinct payment from walmart_sales
+
+20.	Which is the most common customer type?
+select customer_type, count(customer_type) as Total_customers from walmart_sales
+group by customer_type 
+order by total_customers desc
+
+21.	Which customer type buys the most?
+select customer_type, sum(quantity) as total_qty from walmart_sales
+group by customer_type
+order by total_qty desc
+
+22. What is the gender of most of the customers?
+select gender, count(gender) as most_common from walmart_sales
+group by gender
+order by most_common desc
+
+23. What is the gender distribution per branch?
+select distinct branch, gender, count(gender) as distribution from walmart_sales
+group by branch, gender
+order by branch
+
+24.	Which time of the day do customers give most ratings?
+select hour(time) as Time, count(Rating) as rating from walmart_sales
+group by hour(time)
+order by rating desc
+
+25.	Which time of the day do customers give most ratings per branch?
+SELECT branch, Time, rating
+FROM (
+    SELECT 
+        branch, 
+        hour(time) as Time, 
+        count(Rating) as rating,
+        ROW_NUMBER() OVER (PARTITION BY branch ORDER BY count(Rating) DESC) as rn
+    FROM walmart_sales
+    GROUP BY branch, hour(time)
+) AS Table1
+WHERE rn = 1
+ORDER BY branch;
+
+26.	Which day of the week has the best avg ratings?
+
 
