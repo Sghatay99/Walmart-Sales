@@ -1,7 +1,7 @@
 Imported Data in MySQL workbench using the Table Data import wizard.
 
 
-Questions
+### Questions
 1.	How many distinct cities are present in the dataset?
 Select Distinct City from Walmart_sales
 
